@@ -51,3 +51,23 @@ stages:
       md5: 4b55bd45431d49dca4fb63df2ba641a6.dir
       size: 42066
       nfiles: 1
+  split:
+    cmd: python3 scripts/data_scripts/train_test_split.py datasets/stage3/train.csv
+    deps:
+    - path: datasets/stage3/train.csv
+      hash: md5
+      md5: ef58598cf6584f3baf2993cffab1a8cc
+      size: 42066
+    - path: scripts/data_scripts/train_test_split.py
+      hash: md5
+      md5: e7159d840a0a8fdc0b48df68f2be716d
+      size: 956
+    params:
+      params.yaml:
+        split.split_ratio: 0.3
+    outs:
+    - path: datasets/stage4
+      hash: md5
+      md5: 99524e86e83d028f066bedd2bf53f774.dir
+      size: 42038
+      nfiles: 2
