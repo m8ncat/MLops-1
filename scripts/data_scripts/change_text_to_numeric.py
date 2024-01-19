@@ -12,38 +12,28 @@ f_output = os.path.join("datasets", "stage3", "train.csv")
 os.makedirs(os.path.join("datasets", "stage3"), exist_ok=True)
 
 def process_data(fd_in, fd_out):
-    arr_housing_age = []
-    arr_total_rooms = []
-    arr_income = []
-    arr_house_value = []
-    arr_ocean_proximity = []
+    arr_survived = []
+    arr_pclass = []
+    arr_sex = []
+    arr_age = []
 
     for line in fd_in:
         line = line.rstrip('\n').split(',')
-        arr_housing_age.append(line[0])
-        arr_total_rooms.append(line[1])
-        arr_income.append(line[2])
-        arr_house_value.append(line[3])
-        arr_ocean_proximity.append(line[4])
+        arr_survived.append(line[0])
+        arr_pclass.append(line[1])
+        arr_sex.append(line[2])
+        arr_age.append(line[3])
 
-    for i in range(len(arr_ocean_proximity)):
-        if arr_ocean_proximity[i] == 'NEAR BAY':
-            arr_ocean_proximity[i] = 0
-        elif arr_ocean_proximity[i] == '<1H OCEAN':
-            arr_ocean_proximity[i] = 1
-        elif arr_ocean_proximity[i] == 'INLAND':
-            arr_ocean_proximity[i] = 2
-        elif arr_ocean_proximity[i] == '-':
-            arr_ocean_proximity[i] = 3
-        elif arr_ocean_proximity[i] == 'NEAR OCEAN':
-            arr_ocean_proximity[i] = 4
-        elif arr_ocean_proximity[i] == 'ISLAND':
-            arr_ocean_proximity[i] = 5
+    for i in range(len(arr_sex)):
+        if arr_sex[i] == 'male':
+            arr_sex[i] = 0
+        else:
+            arr_sex[i] = 1
 
-    for p_housing_age, p_total_rooms, p_income, p_house_value, p_ocean_proximity  in zip(arr_housing_age, arr_total_rooms, arr_income, arr_house_value, arr_ocean_proximity):
-        fd_out.write("{},{},{},{},{}\n".format(p_housing_age, p_total_rooms, p_income, p_house_value, p_ocean_proximity))
-
+    for p_survived, p_pclass, p_sex, p_age in zip(arr_survived, arr_pclass, arr_sex, arr_age):
+        fd_out.write("{},{},{},{}\n".format(p_survived, p_pclass, p_sex, p_age))
 
 with io.open(f_input, encoding="utf8") as fd_in:
     with io.open(f_output, "w", encoding="utf8") as fd_out:
         process_data(fd_in, fd_out)
+

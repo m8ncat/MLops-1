@@ -5,69 +5,69 @@ stages:
     deps:
     - path: datasets/raw/train.csv
       hash: md5
-      md5: 80ccab65fb115cbad143dbbd2bcd5577
-      size: 460676
+      md5: 2309cc5f04782ed9bb6016d9f4e381cf
+      size: 61194
     - path: scripts/data_scripts/get_features.py
       hash: md5
-      md5: a1d6cf9b5b38b5de83be9745e546c117
-      size: 879
+      md5: 960781a45a401f344b16b928fbb7617c
+      size: 889
     outs:
     - path: datasets/stage1
       hash: md5
-      md5: 679f21b561eae92271fd4bee9ed47fac.dir
-      size: 38628
+      md5: c0881bca7abe13d308e7996ec518d6c1.dir
+      size: 10961
       nfiles: 1
   fill_na:
     cmd: python3 scripts/data_scripts/fill_na.py datasets/stage1/train.csv
     deps:
     - path: datasets/stage1/train.csv
       hash: md5
-      md5: 10aeff3e527a5202e383940ed6942df0
-      size: 38628
+      md5: ce04b7010e5b8c96d78c7f501f4f298a
+      size: 10961
     - path: scripts/data_scripts/fill_na.py
       hash: md5
-      md5: b1eafd4b91b831c8fd37e4af69334aba
-      size: 1458
+      md5: e35ef1c117fb2eda2b48b04a3f8dc870
+      size: 1173
     outs:
     - path: datasets/stage2
       hash: md5
-      md5: 4b55bd45431d49dca4fb63df2ba641a6.dir
-      size: 42066
+      md5: 45e5bd682374b0307769db2eeb1d2497.dir
+      size: 13401
       nfiles: 1
   change_text_to_numeric:
     cmd: python3 scripts/data_scripts/change_text_to_numeric.py datasets/stage2/train.csv
     deps:
     - path: datasets/stage2/train.csv
       hash: md5
-      md5: ef58598cf6584f3baf2993cffab1a8cc
-      size: 42066
+      md5: f1e1712206e6880fdf26ef70f6a71b70
+      size: 13401
     - path: scripts/data_scripts/change_text_to_numeric.py
       hash: md5
-      md5: 9267ae15dc2a35f4879dcb52f9cfb9f4
-      size: 1784
+      md5: 11a4895b5cdb0577630d5ad42ef0f6be
+      size: 1112
     outs:
     - path: datasets/stage3
       hash: md5
-      md5: 4b55bd45431d49dca4fb63df2ba641a6.dir
-      size: 42066
+      md5: 4b1b7469529e9efbee8b1d415691d041.dir
+      size: 10100
       nfiles: 1
   split:
     cmd: python3 scripts/data_scripts/train_test_split.py datasets/stage3/train.csv
     deps:
     - path: datasets/stage3/train.csv
       hash: md5
-      md5: ef58598cf6584f3baf2993cffab1a8cc
-      size: 42066
+      md5: 3ea11bacb3a629eb2727a78c2986201a
+      size: 10100
     - path: scripts/data_scripts/train_test_split.py
       hash: md5
-      md5: e7159d840a0a8fdc0b48df68f2be716d
-      size: 956
+      md5: 989cb306bc05d3bf7cacfa20d13a2b17
+      size: 966
     params:
       params.yaml:
         split.split_ratio: 0.3
     outs:
     - path: datasets/stage4
       hash: md5
-      md5: 99524e86e83d028f066bedd2bf53f774.dir
-      size: 42038
+      md5: d2ce406c9abb5071ef171b352e01d8dc.dir
+      size: 10089
       nfiles: 2
