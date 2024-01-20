@@ -5,83 +5,83 @@ stages:
     deps:
     - path: datasets/raw/train.csv
       hash: md5
-      md5: 2309cc5f04782ed9bb6016d9f4e381cf
-      size: 61194
+      md5: 8cf8d6d39aecf7cc6466eb79b0ed6e1b
+      size: 805421
     - path: scripts/data_scripts/get_features.py
       hash: md5
-      md5: 960781a45a401f344b16b928fbb7617c
-      size: 889
+      md5: b4eec50a4d89eceb077933afbf53736c
+      size: 809
     outs:
     - path: datasets/stage1
       hash: md5
-      md5: c0881bca7abe13d308e7996ec518d6c1.dir
-      size: 10961
+      md5: e9b5869d6c3e2c4320ca23b0270cc86e.dir
+      size: 228322
       nfiles: 1
   fill_na:
     cmd: python3 scripts/data_scripts/fill_na.py datasets/stage1/train.csv
     deps:
     - path: datasets/stage1/train.csv
       hash: md5
-      md5: ce04b7010e5b8c96d78c7f501f4f298a
-      size: 10961
+      md5: 879eeb41427a22a3d87f5cb3630ba5d8
+      size: 228322
     - path: scripts/data_scripts/fill_na.py
       hash: md5
-      md5: e35ef1c117fb2eda2b48b04a3f8dc870
-      size: 1173
+      md5: c7ed9e4aaadcda03ffd68b2a7a28abf3
+      size: 1227
     outs:
     - path: datasets/stage2
       hash: md5
-      md5: 45e5bd682374b0307769db2eeb1d2497.dir
-      size: 13401
+      md5: f66c9d1125a568620054b5fc5960688e.dir
+      size: 229573
       nfiles: 1
   change_text_to_numeric:
     cmd: python3 scripts/data_scripts/change_text_to_numeric.py datasets/stage2/train.csv
     deps:
     - path: datasets/stage2/train.csv
       hash: md5
-      md5: f1e1712206e6880fdf26ef70f6a71b70
-      size: 13401
+      md5: 17a6db417eaea2f51c5082f725b9c713
+      size: 229573
     - path: scripts/data_scripts/change_text_to_numeric.py
       hash: md5
-      md5: 11a4895b5cdb0577630d5ad42ef0f6be
-      size: 1112
+      md5: aad6acec27dee9bd2420f0bfcd6e8139
+      size: 1473
     outs:
     - path: datasets/stage3
       hash: md5
-      md5: 4b1b7469529e9efbee8b1d415691d041.dir
-      size: 10100
+      md5: cc7efcdb716134beb3b8fcac482994f1.dir
+      size: 134971
       nfiles: 1
   split:
     cmd: python3 scripts/data_scripts/train_test_split.py datasets/stage3/train.csv
     deps:
     - path: datasets/stage3/train.csv
       hash: md5
-      md5: 3ea11bacb3a629eb2727a78c2986201a
-      size: 10100
+      md5: 6984856589a9189b971ffa4e7b097b24
+      size: 134971
     - path: scripts/data_scripts/train_test_split.py
       hash: md5
-      md5: 989cb306bc05d3bf7cacfa20d13a2b17
-      size: 966
+      md5: 1c78624b0eb80c82a8de778e061dc2cc
+      size: 968
     params:
       params.yaml:
         split.split_ratio: 0.3
     outs:
     - path: datasets/stage4
       hash: md5
-      md5: d2ce406c9abb5071ef171b352e01d8dc.dir
-      size: 10089
+      md5: e8c176f9183328d061bd392ed61bcb74.dir
+      size: 134956
       nfiles: 2
   train:
     cmd: python3 scripts/model_learning/dt.py datasets/stage4/train.csv model.pkl
     deps:
     - path: datasets/stage4/train.csv
       hash: md5
-      md5: 4953a0a3adcf0795b491b5d55df2a173
-      size: 7060
+      md5: cd3025162cf528b61029e82f8ff2840f
+      size: 94504
     - path: scripts/model_learning/dt.py
       hash: md5
-      md5: 1601c63ffa2bc8366db0bd4259dd9adf
-      size: 712
+      md5: 6fd355c52f70d3813f2664b46167b753
+      size: 714
     params:
       params.yaml:
         train.max_depth: 10
@@ -89,5 +89,25 @@ stages:
     outs:
     - path: models/model.pkl
       hash: md5
-      md5: 29ec8e5112b03e5778102aca552d866b
-      size: 16048
+      md5: 3a639f8927dfeba3a29e62eb8e07b402
+      size: 15576
+  evaluate:
+    cmd: python3 scripts/model_learning/evaluate.py datasets/stage4/test.csv models/model.pkl
+    deps:
+    - path: datasets/stage4/test.csv
+      hash: md5
+      md5: 1d98caff0500d145c1ebe7246b3c9acd
+      size: 40452
+    - path: models/model.pkl
+      hash: md5
+      md5: 3a639f8927dfeba3a29e62eb8e07b402
+      size: 15576
+    - path: scripts/model_learning/evaluate.py
+      hash: md5
+      md5: c0128169dbafb6bdf5435862f209842c
+      size: 568
+    outs:
+    - path: evaluate/score.json
+      hash: md5
+      md5: 878aa2ccb3540e91efd3211a349afa86
+      size: 29

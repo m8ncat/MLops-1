@@ -10,8 +10,8 @@ if len(sys.argv) != 3:
     sys.stderr.write("\tpython evaluate.py data-file model\n")
     sys.exit(1)
 
-df = pd.read_csv(sys.argv[1])
-X = df.iloc[:,[1,2,3]]
+df = pd.read_csv(sys.argv[1], header=None)
+X = df.iloc[:,[1,2,3,4]]
 y = df.iloc[:,0]
 
 with open(sys.argv[2], "rb") as fd:
